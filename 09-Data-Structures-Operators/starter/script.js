@@ -62,32 +62,46 @@ const restaurant = {
     ${ing1}, ${ing2}, ${ing3} `);
   }
 };
+
+
+// Before chalange #3
+const ordersSet = new Set([
+  'Pasta',
+  'Pizza',
+  'Pizza',
+  'Risotto',
+  'Pasta',
+  'Pizza',
+]);
+console.log(ordersSet);
+
+
 // Properties NAMES
-const properties = Object.keys(restaurant.openingHours);
-console.log(properties);
+// const properties = Object.keys(restaurant.openingHours);
+// console.log(properties);
 
 // for(const day of Object.keys(restaurant.openingHours)){
 //   console.log(day);
 // }
 
-let openStr = `We are open on ${properties.length} days`;
-for(const day of properties){
-  openStr +=` ${day},`;
-}
-console.log(openStr);
+// let openStr = `We are open on ${properties.length} days`;
+// for(const day of properties){
+//   openStr +=` ${day},`;
+// }
+// console.log(openStr);
 
-// Properties VALUES
-const values = Object.values(restaurant.openingHours);
-console.log(values);
+// // Properties VALUES
+// const values = Object.values(restaurant.openingHours);
+// console.log(values);
 
-// Entire object
-const entries = Object.entries(restaurant.openingHours);
-console.log(entries);
+// // Entire object
+// const entries = Object.entries(restaurant.openingHours);
+// console.log(entries);
 
-// key, value
-for(const [key, {open, close}] of entries){
-  console.log(`On ${key} we open at ${open} and close at ${close}`);
-}
+// // key, value
+// for(const [key, {open, close}] of entries){
+//   console.log(`On ${key} we open at ${open} and close at ${close}`);
+// }
 
 // Loop of an antire array  for off loop
 // const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
