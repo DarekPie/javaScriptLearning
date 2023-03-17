@@ -71,6 +71,86 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+/*
+let arr = ['a', 'b', 'c', 'd', 'e'];
+
+// slice
+console.log([arr]);
+console.log(arr);
+console.log([...arr]);
+console.log(arr.slice(2));
+console.log(arr.slice(2,4));
+console.log(arr.slice(-2));
+console.log(arr.slice(1, -2));
+
+// splice
+arr.splice(-1);   // Permanetnei usuwa  z orygnału 
+console.log(arr); 
+
+
+// Reverse
+const arr2 = ['j', 'i', 'h', 'g', 'f'];
+arr = ['a', 'b', 'c', 'd', 'e'];
+console.log(arr2.reverse());
+
+// concat 
+const letters = arr.concat(arr2);
+console.log(letters);
+
+// join
+console.log(letters.join('-'));
+*/
+
+//******************************************************************************* */
+// at method
+//******************************************************************************* */
+/*
+const arr = [23, 11, 64];
+console.log(arr[0]);
+console.log(arr.at(0));
+
+// Osatni element tablicy
+console.log(arr[arr.length-1]);
+console.log(arr.slice(-1)[0]);
+console.log(arr.at(-1));
+
+console.log('jonas'.at(1));
+*/
+
+//******************************************************************************* */
+// LOOP FOR EARCH 
+//******************************************************************************* */
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+console.log("for loop");
+for(const move of movements) {
+  if(move > 0 ) {
+    console.log(`You deposited ${move}`);
+  }else {
+    console.log(`You withdrew ${Math.abs(move)}`);
+  }
+}
+
+console.log("for each loop");
+movements.forEach(function(movment){
+  if(movment > 0 ) {
+    console.log(`You deposited ${movment}`);
+  }else {
+    console.log(`You withdrew ${Math.abs(movment)}`);
+  }
+});
+
+movements.forEach(function(mov, i, arr){
+  if(mov > 0 ){
+    console.log(`Movement ${i + 1}: You deposited ${mov}`);
+  }else {
+    console.log(`Movement ${i + 1}: You withdrew ${Math.abs(mov)}`);
+  }
+  console.log(arr);
+})
+
+console.log(movements);
