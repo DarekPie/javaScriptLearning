@@ -407,3 +407,19 @@ Test data:
 § Data 2: [16, 6, 10, 5, 6, 1, 4]
 
 */
+
+const calcAcerageHumanAge = function (ages) {
+  const humanAges = ages.map(age => (age <= 2 ? 2 * age : 16 + age * 4));
+  console.log(humanAges);
+
+  const adults = humanAges.filter(age => age >= 18);
+  console.log(adults);
+
+  const avarage = adults.reduce((acc, age) => acc + age, 0) / adults.length;
+  console.log(avarage);
+
+  return avarage;
+};
+
+calcAcerageHumanAge([5, 2, 4, 1, 15, 8, 3]);
+calcAcerageHumanAge([16, 6, 10, 5, 6, 1, 4]);
