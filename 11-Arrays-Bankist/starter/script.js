@@ -71,7 +71,7 @@ const displayMovments = function (movments) {
     <div class="movements__row">
     <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
     <div class="movements__date">3 days ago</div>
-    <div class="movements__value">${mov}</div>
+    <div class="movements__value">${mov} EUR</div>
     </div>
     `;
 
@@ -88,6 +88,30 @@ const calcDisplayPrintBalance = function (movements) {
 };
 
 calcDisplayPrintBalance(account1.movements);
+
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  console.log(incomes);
+  labelSumIn.textContent = `${incomes} EUR`;
+
+  const out = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(out)} EUR`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter((int, i, arr) => {
+      console.log(arr);
+      return int >= 1;
+    })
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest} EUR`;
+};
+calcDisplaySummary(account1.movements);
 
 const createUsernames = function (accs) {
   accs.forEach(function (acc) {
@@ -423,3 +447,29 @@ const calcAcerageHumanAge = function (ages) {
 
 calcAcerageHumanAge([5, 2, 4, 1, 15, 8, 3]);
 calcAcerageHumanAge([16, 6, 10, 5, 6, 1, 4]);
+
+//#3Chalange
+
+const calcAverageHumanAge3 = ages =>
+  ages
+    .map(age => (age <= 2 ? 2 * age : 16 + age * 4))
+    .filter(age => age >= 18)
+    .reduce((acc, age, i, arr) => acc + age / arr.length, 0);
+
+const avg1 = calcAverageHumanAge3([5, 2, 4, 1, 15, 8, 3]);
+const avg2 = calcAverageHumanAge3([16, 6, 10, 5, 6, 1, 4]);
+
+console.log('Chalange #3');
+console.log(avg1);
+console.log(avg2);
+
+/*
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const eurToUSD = 1.1;
+const totalDeposits = movements
+  .filter(mov => mov > 0) // 1.Pokaz tylko te ktore sa dodatnie
+  .map(mov => mov * eurToUSD) // 2. Pomnoz wszystkie x1.1
+  .reduce((acc, mov) => acc + mov, 0); // 3.zrob sume wszystkich elementow
+console.log(totalDeposits);
+*/
