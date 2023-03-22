@@ -431,7 +431,7 @@ Test data:
 § Data 2: [16, 6, 10, 5, 6, 1, 4]
 
 */
-
+/*
 const calcAcerageHumanAge = function (ages) {
   const humanAges = ages.map(age => (age <= 2 ? 2 * age : 16 + age * 4));
   console.log(humanAges);
@@ -462,7 +462,7 @@ const avg2 = calcAverageHumanAge3([16, 6, 10, 5, 6, 1, 4]);
 console.log('Chalange #3');
 console.log(avg1);
 console.log(avg2);
-
+*/
 /*
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
@@ -473,3 +473,11 @@ const totalDeposits = movements
   .reduce((acc, mov) => acc + mov, 0); // 3.zrob sume wszystkich elementow
 console.log(totalDeposits);
 */
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const firstWithdrawal = movements.find(mov => mov < 0);
+console.log(movements);
+console.log(firstWithdrawal);
+
+console.log(accounts);
