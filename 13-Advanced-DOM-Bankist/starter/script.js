@@ -1,12 +1,14 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+///////////////////////////////////////
+// Modal window
 
 const openModal = function (e) {
   e.preventDefault();
@@ -33,11 +35,59 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+////////////////////////
+//Pagin
+
+//Button scroling
+btnScrollTo.addEventListener('click', function (e) {
+  const s1coord = section1.getBoundingClientRect();
+  console.log(s1coord);
+  console.log(e.target.getBoundingClientRect());
+
+  // Gdzie jest widok okna w pikselach
+  console.log('Current scroll (X/Y)', window.pageXOffset, pageYOffset);
+
+  console.log(
+    'height/width viewport',
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
+
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+///////////////////////////
+// Page navigation
+/*
+document.querySelectorAll('.nav__link').forEach(function (el) {
+  el.addEventListener('click', function (e) {
+    e.preventDefault();
+    const id = this.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+*/
+
+// 1. Add event listner to comon parent Element
+// 2. Determine what element originated the event
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  // Matchin strategy
+  if (e.target.classList.contains('nav__link')) {
+    // console.log('LINK');
+    const id = e.target.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 // 1. Creating and deleteing elements
-
+/*
 //Selecting elements
 console.log(document.documentElement);
 console.log(document.head);
@@ -62,4 +112,137 @@ message.classList.add('coockie-message');
 message.innerHTML =
   'We Use coockies for improved funcionalitys and analytic. <button class="btn btn--close-cookie"><Got it!</button>';
 
-header.prepend(message);
+header.append(message);
+// header.after(message);
+// header.append(message.cloneNode(true));
+
+//Delete elements
+document
+  .querySelector('.btn--close-cookie')
+  .addEventListener('click', function () {
+    // message.remove();
+    message.parentElement.removeChild(message);
+  });
+
+///////////////////////////////////
+// 2. Styles atributes and classes
+
+//Styles
+message.style.backgroundColor = '#37383d';
+message.style.width = '120%';
+
+console.log(message.style.height);
+console.log(message.style.backgroundColor);
+console.log(getComputedStyle(message).color);
+console.log(getComputedStyle(message).height);
+
+message.style.height =
+  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
+
+document.documentElement.style.setProperty('--color-primary', 'orangered');
+
+//Atributes
+const logo = document.querySelector('.nav__logo');
+console.log(logo.alt);
+console.log(logo.src); // Wzgledna sciezka
+
+logo.alt = 'Beutifil minimalist logo';
+
+//Non-standard
+// nie uzywamy niestadardowych atrybutow - tylko standardowe umieszczone w liscie atrybudow!
+console.log(logo.designer); // nie działa
+console.log(logo.getAttribute('designer')); // działa!
+logo.setAttribute('company', 'Bankist');
+
+console.log(logo.getAttribute('src')); //Bezwgledna sciezka
+
+const link = document.querySelector('.twitter-link');
+console.log(link.href);
+console.log(link.getAttribute('href'));
+
+//Data Atributes - they are started with data!!!!!!!!!! myślnik na camelCase
+// console.log(logo.CDATA_SECTION_NODE.versionNumber);
+console.log(logo.dataset.versionNumber);
+
+// Clases
+logo.classList.add('c', 'j');
+logo.classList.remove('c', 'j');
+logo.classList.toggle('c');
+logo.classList.contains('c');   //Not invludes
+
+//DON'T USE IT it ovveride all existing classes what is inside
+// logo.className = 'jonas';
+*/
+
+//Scroling!!!
+
+// const btnScrollTo = document.querySelector('.btn--scroll-to');
+// const section1 = document.querySelector('#section--1');
+// btnScrollTo.addEventListener('click', function (e) {
+//   const s1coord = section1.getBoundingClientRect();
+//   console.log(s1coord);
+//   console.log(e.target.getBoundingClientRect());
+
+//   // Gdzie jest widok okna w pikselach
+//   console.log('Current scroll (X/Y)', window.pageXOffset, pageYOffset);
+
+//   console.log(
+//     'height/width viewport',
+//     document.documentElement.clientHeight,
+//     document.documentElement.clientWidth
+//   );
+
+//******OLD SCOOL */
+//Scrolint
+// window.scrollTo(s1coord.left, s1coord.top);  // nie dziala jesli widok jest na innej pozycji niz na samej górze
+// window.scrollTo(
+//   s1coord.left + window.pageXOffset,
+//   s1coord.top + window.pageYOffset
+// ); // Teraz dziala jak nalezy
+
+// window.scrollTo({
+//   left: s1coord.left + window.pageXOffset,
+//   top: s1coord.top + window.pageYOffset,
+//   behavior: 'smooth',
+// });
+
+//**************NEW school!!!!! ****//  modern browsers!
+// section1.scrollIntoView({ behavior: 'smooth' });
+
+///////////////////////////////////
+// 3. Types and EVENTS event handler
+/*
+const h1 = document.querySelector('h1');
+h1.addEventListener('mouseenter', function (e) {
+  alert('addEventListener: Great! You are reading the heading :D');
+});
+
+h1.onmouseenter = function (e) {
+  alert('addEventListener: Great! You are reading the heading :D');
+};
+*/
+///////////////////////////////////
+//4. Event propagation
+/*
+//rgb
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
+
+// console.log(randomColor(0, 255));
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  // stop propagation
+  // e.stopPropagation;
+});
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+});
+
+document.querySelector('.nav').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+});
+*/
