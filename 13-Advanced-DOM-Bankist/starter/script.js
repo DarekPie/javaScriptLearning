@@ -109,7 +109,7 @@ tabsContainer.addEventListener('click', function(e){
   document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active');
 });
 
-// Menu fade animation
+// Menu fade animation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 const handleOver = function(e, opacity){
   console.log(this);
@@ -131,19 +131,65 @@ nav.addEventListener('mouseover',  handleOver.bind(0.5));
 nav.addEventListener('mouseout', handleOver.bind(1));
 
 // Sticky Navigation - puting navigation bar in specific place after scrollin
-const initialCords = section1.getBoundingClientRect();
-console.log(initialCords);
+// const initialCords = section1.getBoundingClientRect();
+// console.log(initialCords);
 
-window.addEventListener('scroll', function(){
-  console.log(window.scrollY);
+// window.addEventListener('scroll', function(){
+//   console.log(window.scrollY);
 
-  if(this.window.scrollY > initialCords.top) 
-    nav.classList.add('sticky') 
-  else 
-    nav.classList.remove('sticky')
+//   if(this.window.scrollY > initialCords.top) 
+//     nav.classList.add('sticky') 
+//   else 
+//     nav.classList.remove('sticky')
+// });
+
+
+// const obsCallBack = function(entries, observer) {
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   })
+// };
+
+// const obsOptions = {
+//   root: null,
+//   threshold: 0.1
+// }
+
+// const observer = new IntersectionObserver(obsCallBack, obsOptions);
+// observer.observe(section1);
+
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+// console.log(navHeight);
+
+const stickyNav = function(entries){            // we dont needed the obsevers
+  const [entry] = entries;
+
+  if(!entry.isIntersecting)
+    nav.classList.add('sticky');
+  else
+    nav.classList.remove('sticky');
+}
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  // rootMargin: '-90px'  hardcoding
+  rootMargin: `-${navHeight}px`,
 });
+headerObserver.observe(header);
 
 
+// Reveal sections!!!!!!!!!!!!!!!!!!!!!!
+const allSections = document.querySelectorAll('.section');
+
+const revealSection = function(etries, observer){};
+
+const sectionObserver = new IntersectionObserver(revealSection, {});
+allSections.forEach(function(sectopm) {
+  sectionObserver.observe(section);
+  section.classList.add('section--hiden');
+})
 
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
