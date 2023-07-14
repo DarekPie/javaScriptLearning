@@ -130,6 +130,20 @@ nav.addEventListener('mouseover',  handleOver.bind(0.5));
 // nav.addEventListener('mouseout', function(e) {handleOver(e, 1);});
 nav.addEventListener('mouseout', handleOver.bind(1));
 
+// Sticky Navigation - puting navigation bar in specific place after scrollin
+const initialCords = section1.getBoundingClientRect();
+console.log(initialCords);
+
+window.addEventListener('scroll', function(){
+  console.log(window.scrollY);
+
+  if(this.window.scrollY > initialCords.top) 
+    nav.classList.add('sticky') 
+  else 
+    nav.classList.remove('sticky')
+});
+
+
 
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
