@@ -39,6 +39,8 @@ document.addEventListener('keydown', function (e) {
 ////////////////////////
 //Pagin
 
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 //Button scroling
 btnScrollTo.addEventListener('click', function (e) {
   const s1coord = section1.getBoundingClientRect();
@@ -84,7 +86,8 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
-
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 // Tabbed component 
 const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
@@ -109,6 +112,9 @@ tabsContainer.addEventListener('click', function(e){
   document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active');
 });
 
+
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 // Menu fade animation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 const handleOver = function(e, opacity){
@@ -183,13 +189,57 @@ headerObserver.observe(header);
 // Reveal sections!!!!!!!!!!!!!!!!!!!!!!
 const allSections = document.querySelectorAll('.section');
 
-const revealSection = function(etries, observer){};
+const revealSection = function(entires, observer){
+  const [entry] = entires;
 
-const sectionObserver = new IntersectionObserver(revealSection, {});
-allSections.forEach(function(sectopm) {
+
+  if(!entry.isIntersecting) return;
+
+  entry.target.classList.remove('section--hidden');
+  // observer.unobserver(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+allSections.forEach(function(section) {
   sectionObserver.observe(section);
-  section.classList.add('section--hiden');
+  section.classList.add('section--hidden');
 })
+
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
+// Lazzy loading imiges!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+const imgTargets = document.querySelectorAll('img[data-src]');
+
+const loadImg = function(entires, observer) {
+  const [entry] = entires;
+  // console.log(entry);
+
+  if(!entry.isIntersecting) return;
+
+  // Replace src with data-src!!!!!!!!!!!!!!!!!!!!!!! Najwazniejsze czyli zamiana malym zdjeciem na wieksze
+  entry.target.src = entry.target.dataset.src;
+  
+
+  entry.target.addEventListener('load', function() {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+}
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  rootMargin: '200px',
+});
+
+imgTargets.forEach(img=>imgObserver.observe(img));
+
+
 
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
