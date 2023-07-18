@@ -530,3 +530,7 @@ console.log(h1.parentElement.children);
     el.style.transform='scale(0.5)';
 })
 */
+
+document.addEventListener('DOMContentLoaded', function(e){
+  console.log('Html Parsed and DOM tree build!', e);
+});
