@@ -1,5 +1,5 @@
 'use strict';
-
+/*
 const Person = function (firstName, birthYear) {
   // Instance properties
   this.firstName = firstName;
@@ -99,3 +99,55 @@ bmw.accelerate();
 bmw.accelerate();
 bmw.brake();
 */
+
+// Clas Expresion
+// const PersonClass = class{}
+
+// Class Declaration
+
+class PersonCl{
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+
+  calcAge(){
+    console.log(2037 - this.birthYear);
+  }
+
+  greet(){
+    console.log(`Hej ${this.firstName}`);
+  }
+
+  get agre(){
+    return 2037 - this.birthYear;
+  }
+};
+
+const jessica = new PersonCl('Jessica', 1996);
+console.log(jessica);
+jessica.calcAge();
+
+
+// PersonCl.prototype.greet=function(){
+//   console.log(`Hej ${this.firstName}`);
+// }
+// jessica.greet();
+
+
+
+const account = {
+  owner: 'Jonas',
+  movements : [200, 530, 120, 300],
+
+  get latest(){
+    return this.movements.slice(-1).pop();
+  },
+  set latest(mov){
+     this.movements.push(mov);
+  },
+};
+
+console.log(account.latest);
+account.latest=50;
+console.log(account.movements);
