@@ -282,8 +282,9 @@ tesla.accelerate();
 
 ///////////////////////////////////////////////
 // ES6!!!!!!!!!
-
+/*
 // Class declaration
+
 class PersonCl {
   constructor(fullName, birthYear) {
     this.fullName = fullName;
@@ -320,3 +321,161 @@ class PersonCl {
     console.log(this);
   }
 }
+
+class StudentCl extends PersonCl {
+  constructor(fullName, birthYear, course){
+    // PersonCl.call() Nie musimy juz tak
+    //Always needs to happen first!
+    super(fullName, birthYear) // to jest konstruktor rodzica wzywany
+    this.course = course;
+  }
+
+  introduce () {
+    console.log(`My name is ${this.fullName} and I study ${this.course}`);
+  };
+}
+
+// const martha = new StudentCl('Marth Jones', 2012);
+const martha = new StudentCl('Marth Jones', 2012, 'Computer Science');
+martha.introduce();
+*/
+
+/*
+const PersonProto ={
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  },
+  init(firstName, birthYear){
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+
+const steven = Object.create(PersonProto);
+
+const StudentProto = Object.create(PersonProto);
+
+StudentProto.init=function(firstName, birthYear, course){
+  PersonProto.init.call(this, firstName, birthYear);
+  this.course = course;
+}
+
+StudentProto.introduce = function(){
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+}
+
+
+const jay = Object.create(StudentProto);
+jay.init('Jay', 2010, 'Computer Scince')
+jay.introduce();
+
+*/
+class Account {
+  #movements; 
+  constructor(owner, currency, pin){
+    this.owner = owner;
+    this.currency = currency;
+    this.pin = pin;
+    this.#movements=[];
+    this.locale = navigator.language;
+
+    console.log(`Thanks for opening an account, ${owner}`);
+  }
+
+  getMovements(){
+    return this.#movements;
+  }
+
+  deposit(val){
+    this.#movements.push(val);
+    return this;
+  }
+
+  withdraw(val){
+    this.#movements.push(-val);
+    return this;
+  }
+
+  approveLoan(val){
+    return true;
+  }
+}
+
+
+const acc1 = new Account('Jonas', 'EUR', 1111);
+
+// acc1.movements.push(250);
+// acc1.deposit(250);
+// console.log(acc1);
+// // acc1.movements.push(-140);
+// acc1.withdraw(140);
+console.log(acc1);
+// console.log(acc1.getMovements());
+
+//chaining  -łańcuchowanie metod  - trzeba dodac do metod return this;
+acc1.deposit(300).deposit(500).withdraw(35);
+
+
+
+
+
+///////////////////////////////////
+// Chalgne 4#
+// const Person = function (firstName, birthYear)
+// Person.prototype.calcAge = function ()
+// class CarCL {
+//   constructor(make, speed) {
+  class CarCL{ 
+      constructor  (make, speed) {
+      this.make = make;
+      this.speed = speed;
+    };
+
+    accelerate(){
+      this.speed += 10;
+      console.log(`${this.make} is going at ${this.speed} km/h`);
+      return this;
+    };
+
+    brake(){
+      this.speed -= 5;
+      console.log(`${this.make} is going at ${this.speed} km/h`);
+      return this;
+    };
+
+  };
+  
+  
+  // get speedUS() {
+  //   return this.speed / 1.6;
+  // }
+
+  class EVCl extends CarCL{
+
+    constructor (make, speed, charge) {
+        super(make, speed);
+        this.#charge = charge;
+    };
+
+    chargeBattery(chargeTo) {
+      this.#charge = chargeTo;
+      return this;
+    };
+
+    accelerate() {
+      this.speed += 20;
+      this.charge--;
+      console.log(`${this.make} is going at ${this.speed} km/h with a charge of ${this.charge}` );
+      return this;
+    };
+
+  };
+  
+  const bmw = new CarCL('BMW', 120);
+  const mercedes = new CarCL('Mercedes', 95);
+  
+  const tesla = new EVCl('Tesla', 120, 23);
+  console.log(tesla);
+  tesla.chargeBattery(90);
+  console.log(tesla);
+  tesla.accelerate();
