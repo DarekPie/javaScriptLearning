@@ -645,6 +645,7 @@ movements.sort((a, b) => b - a);
 console.log(movements);
 */
 
+<<<<<<< Updated upstream
 // Chalange #4
 /*
 Julia and Kate are still studying dogs, and this time they are studying if dogs are 
@@ -751,3 +752,6 @@ console.log(dogs.filter(checkEatingOkay));
 //8.
 const dogsSorted = dogs.slice().sort((a, b) => a.recFood - b.recFood);
 console.log(dogsSorted);
+=======
+console.log([1, 2, 3, 4, 5, 6, 7]);
+>>>>>>> Stashed changes
