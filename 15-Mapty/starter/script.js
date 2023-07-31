@@ -3,17 +3,11 @@
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const form = document.querySelector('.form');
-const containerWorkouts = document.querySelector('.workouts');
-const inputType = document.querySelector('.form__input--type');
-const inputDistance = document.querySelector('.form__input--distance');
-const inputDuration = document.querySelector('.form__input--duration');
-const inputCadence = document.querySelector('.form__input--cadence');
-const inputElevation = document.querySelector('.form__input--elevation');
+
 
 class Workout {
   date = new Date();
-  id = (new Date() + '').slice(-10);
+  id = (Date.now() + '').slice(-10);
 
   constructor(cords, distance, duration) {
     this.cords = cords;
@@ -22,7 +16,7 @@ class Workout {
   }
 }
 
-class Runign extends Workout {
+class Runnign extends Workout {
   constructor(cords, distance, duration, cadence) {
     super(cords, distance, duration);
     this.cadence = cadence;
@@ -32,8 +26,8 @@ class Runign extends Workout {
 
   calcPace() {
     //min/km
-    pace = this.duration / this.distance;
-    return pace;
+    this.pace = this.duration / this.distance;
+    return this.pace;
   }
 }
 
@@ -47,10 +41,25 @@ class Cycling extends Workout {
 
   calcSpeed() {
     //km/h
-    speed = this.distance / (this.duration / 60);
-    return speed;
+    this.speed = this.distance / (this.duration / 60);
+    return this.peed;
   }
 }
+
+const run1 = new Runnign([39, -12], 5.2, 24, 178);
+const cycling1 = new Cycling([39, -12], 27, 95, 523);
+console.log(run1, cycling1);
+
+///////////////////////////////////////
+// Application Architecture
+
+const form = document.querySelector('.form');
+const containerWorkouts = document.querySelector('.workouts');
+const inputType = document.querySelector('.form__input--type');
+const inputDistance = document.querySelector('.form__input--distance');
+const inputDuration = document.querySelector('.form__input--duration');
+const inputCadence = document.querySelector('.form__input--cadence');
+const inputElevation = document.querySelector('.form__input--elevation');
 
 // let map, mapEvent;
 
@@ -109,15 +118,57 @@ class App {
   }
 
   _newWorkout(e) {
+
+    //helper function
+    const validInputs = (...inputs) => 
+      inputs.every(inp => Number.isFinite(inp));
+
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
+
+
     e.preventDefault();
     console.log(this);
 
-    // Clear input fields
-    inputDistance.value =
-      inputDuration.value =
-      inputCadence.value =
-      inputElevation.value =
-        '';
+    // Get data from form
+    const type = inputType.value;     // Cycling i running sa czescia taga value w HTML
+    const distance = +inputDistance.value;    // + konwertuje na liczbe
+    const duration = +inputDuration.value;
+
+    // If workout running, create runnig object
+    if(type==='running'){
+      
+      const cadence = +inputCadence.value;
+      //Check if data is valid
+      // if(!Number.isFinite(distance) || !Number.isFinite(duration) || !Number.isFinite(cadence)){
+      //   return alert('Input have to be positive numbers!')
+      // }
+      if(!validInputs(distance, duration, cadence) ||
+        !allPositive(distance,duration,cadence)){
+        return alert('Input have to be positive numbers!');
+      }
+      const workout = new Runnign()
+    }
+
+    // If Woirkout cycling, create cycling object
+    if(type==='cycling'){
+      
+      const elevation = +inputElevation.value;
+      //Check if data is valid
+      // if(!Number.isFinite(elevation)) return alert('Input have to be positive numbers!')
+      if(!validInputs(distance, duration, elevation) || 
+        !allPositive(distance, duration)){
+        return alert('Input have to be positive numbers!');
+      }
+    }
+
+    // Add new object to workout array
+
+    //Render workout on map as marker
+
+    //Render workout on list
+
+    //Hide form ad CLear input fields
+
 
     // Display marker
     console.log(this.#mapEvent);
@@ -135,6 +186,13 @@ class App {
       )
       .setPopupContent('Workout')
       .openPopup();
+
+
+      inputDistance.value =
+      inputDuration.value =
+      inputCadence.value =
+      inputElevation.value =
+        '';
   }
 }
 
