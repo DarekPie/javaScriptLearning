@@ -297,11 +297,21 @@ getCountryData('Australia');
 
 const whereAmI = function(lat, lng){
   fetch(`https://geocode.xyz/${lat},${lng}?json=1`)
-    .then(res => res.json())
+    .then(res => { if(!res.ok) throw new Error(`Problem with geocodin ${res.status}`);
+      return res.json()
+    })
       .then(data => {
         console.log(data);
-        // console.log(`You are in ${data.city}, ${data.country}`);
+        console.log(`You are in ${data.city}, ${data.country}`);
       })
+        .then(response=>{
+          if(!response.ok)
+            throw new Error(`Country not found (${response.status})`);
+          return response.json();
+        })
+          .then(data => renderCountry(data, 'neighbour'))
+            .catch(err => console.error(`${err.message} boom`));
+        
 }
 
 whereAmI(52.508, 13.381)
