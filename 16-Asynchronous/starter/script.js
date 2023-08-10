@@ -294,7 +294,7 @@ getCountryData('Australia');
 // § Coordinates 1: 52.508, 13.381 (Latitude, Longitude)
 // § Coordinates 2: 19.037, 72.873
 // § Coordinates 3: -33.933, 18.474
-
+/*
 const whereAmI = function(lat, lng){
   fetch(`https://geocode.xyz/${lat},${lng}?json=1`)
     .then(res => { if(!res.ok) throw new Error(`Problem with geocodin ${res.status}`);
@@ -317,3 +317,223 @@ const whereAmI = function(lat, lng){
 whereAmI(52.508, 13.381)
 whereAmI(19.037, 72.873)
 whereAmI(-33.933, 18.474)
+*/
+
+/////////////////////////////
+//Problem with even  loop and building simpl;e promiess
+/*
+console.log('Test start');                            //#1 
+setTimeout(()=>console.log('0 sec timer'), 0);        //#4 !!!!!!!
+Promise.resolve('Resolved promise 1').then(res => console.log(res));  // #3 !!!
+
+//solving problem
+Promise.resolve('Resolve promise 2').then(res => {
+  for(let i = 0; i < 2000000000; i++ ){
+
+  }
+  console.log(res);
+})
+
+console.log('Test End');                              //#2 !!!
+
+*/
+
+//////////////////////////
+//Simple promies
+/*
+const lotteryPromiese = new Promise(function(resolve, reject){
+  
+  console.log('Lotery Draw is happening');
+  setTimeout(function(){
+    if(Math.random() >= 0.5) {
+      resolve('You WIN!');
+    }else {
+      reject(new Error('You lose!'));
+    }
+  } , 2000)
+
+});
+
+// lotteryPromiese.then(res => console.log(res)).catch(err=>console.log(err));
+
+
+// Promissifying setTimout  - rozwiazanie problemu call back f
+const wait = function(seconds) {
+  return new Promise(function(resolve){
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+
+wait(1).then(() => { 
+  console.log('1 Second passed wait');
+  return wait(1);
+}).then(() => {
+  console.log('2 Second passed wait');
+  return wait(1);
+}).then(() => {
+  console.log('3 Second passed wait');
+  return wait(1);
+}).then(() => {
+  console.log('4 Second passed wait');
+  return wait(1);
+})
+
+// Refencja - tzn co to rozwiazauje: 
+
+// setTimeout(() => {
+//   console.log('1 Second passed setTimeout');
+//   setTimeout(() => {
+//     console.log('2 Second passed setTimeout');
+//     setTimeout(() => {
+//       console.log('3 Second passed setTimeout');
+//       setTimeout(() => {
+//         console.log('4 Second passed setTimeout');
+//       }, 1000);
+//     }, 1000);
+//   }, 1000);
+// }, 1000);
+
+Promise.resolve('abc').then(x=>console.log(x));
+Promise.reject(new Error('Problem!')).catch(x=>console.error(x));
+*/
+/*
+// navigator.geolocation.getCurrentPosition(
+//   position=>console.log(position),
+//   err => console.log(err)
+// );
+
+
+// console.log('Getting posittion');
+const getPosition = function() {
+  return new Promise(function(resolve, reject){
+    // navigator.geolocation.getCurrentPosition(
+    //   position=>console.log(position),
+    //   err => reject(err)
+    // );
+    navigator.geolocation.getCurrentPosition(resolve, reject);  // to samo co wyzej!
+  });
+};
+getPosition().then(pos => console.log(pos));
+
+//from Chalange #1
+const whereAmI = function(lat, lng){
+
+  getPosition().then(pos=>{
+    console.log(pos.coords);
+  })
+
+  fetch(`https://geocode.xyz/${lat},${lng}?json=1`)
+    .then(res => { if(!res.ok) throw new Error(`Problem with geocodin ${res.status}`);
+      return res.json()
+    })
+      .then(data => {
+        console.log(data);
+        console.log(`You are in ${data.city}, ${data.country}`);
+        
+        return fetch(`https:restcountries.com/v3.1/name/${data.country}`);
+      })
+        .then(res=>{
+          if(!res.ok)
+            throw new Error(`Country not found (${res.status})`);
+          
+          return res.json();
+        })
+          .then(data => renderCountry(data, 'neighbour'))
+            .catch(err => console.error(`${err.message} boom`));
+};
+
+btn.addEventListener('click', whereAmI);
+*/
+/*
+/////////////////////////////////////////////////////////////////////////
+////////////
+Coding Challenge #2
+/////////////////////
+For this challenge you will actually have to watch the video! Then, build the image 
+loading functionality that I just showed you on the screen.
+Your tasks:
+
+Tasks are not super-descriptive this time, so that you can figure out some stuff by 
+yourself. Pretend you're working on your own �
+
+
+PART 1
+1. Create a function 'createImage' which receives 'imgPath' as an input. 
+This function returns a promise which creates a new image (use 
+document.createElement('img')) and sets the .src attribute to the 
+provided image path
+
+2. When the image is done loading, append it to the DOM element with the 
+'images' class, and resolve the promise. The fulfilled value should be the 
+image element itself. In case there is an error loading the image (listen for 
+the'error' event), reject the promise
+
+3. If this part is too tricky for you, just watch the first part of the solution
+
+
+PART 2
+4. Consume the promise using .then and also add an error handler
+
+5. After the image has loaded, pause execution for 2 seconds using the 'wait'
+function we created earlier
+
+6. After the 2 seconds have passed, hide the current image (set display CSS 
+property to 'none'), and load a second image (Hint: Use the image element 
+returned by the 'createImage' promise to hide the current image. You will 
+need a global variable for that �)
+
+7. After the second image has loaded, pause execution for 2 seconds again
+
+8. After the 2 seconds have passed, hide the current image
+
+
+Test data:n Images i the img folder. Test the error handler by passing a wrong 
+image path. Set the network speed to “Fast 3G” in the dev tools Network tab, 
+otherwise images load too fas
+
+*/
+
+let currenctImg;
+const imgCointeiner = document.querySelector('.images');
+
+const wait = function(seconds){
+  return new Promise(function(resolve) {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+
+const createImage = function(imgPath) {
+  return new Promise(function(resolve, reject){
+    const img = document.createElement('img');
+    img.src = imgPath;
+
+    img.addEventListener('load', function(){
+      imgCointeiner.append(img);
+      resolve(img);
+    });
+
+    img.addEventListener('error', function(){
+      reject(new Error('Image not found'));
+    });
+  });
+};
+
+createImage('img/img-1.jpg')
+.then(img => {
+  currenctImg = img;
+  console.log('Image 1 loaded');
+  return wait(2);
+})
+.then(() => {
+  currenctImg.style.display = 'none';   // #3 done!
+  return createImage('img/img-2.jpg');
+})
+.then(img=>{
+  currenctImg = img;
+  console.log('Image 2 loaded');
+  return wait(2);
+})
+.then(()=>{
+  currenctImg.style.display = 'none';   // #5 and #6 done!
+})
+.catch(err => console.log(err))
