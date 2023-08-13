@@ -31,6 +31,17 @@ const renderError = function(msg) {
   countriesContainer.style.opacity = 1;
 };
 
+
+const getJSON = function(url, errorMsg ='Something went wrong') {
+  return fetch(url).then((response) => { 
+    console.log(response);
+    if(!response.ok){
+      throw new Error(`${errorMsg} Country not found(${response.status})`);
+    }
+    return response.json(); 
+  });
+}
+
 ///////////////////////////////////////
 /*
 const getCountryData = function(country) {
@@ -492,7 +503,7 @@ image path. Set the network speed to “Fast 3G” in the dev tools Network tab,
 otherwise images load too fas
 
 */
-
+/*
 let currenctImg;
 const imgCointeiner = document.querySelector('.images');
 
@@ -537,3 +548,144 @@ createImage('img/img-1.jpg')
   currenctImg.style.display = 'none';   // #5 and #6 done!
 })
 .catch(err => console.log(err))
+*/
+
+
+
+///////////////////////////////////////////////////////////////////////
+///// ASYNC EASY WAY!!!!!!!!!!!
+///////////////////////
+/*
+const getPosition = function() {
+  return new Promise(function(resolve, reject){
+    navigator.geolocation.getCurrentPosition(resolve, reject);  // to samo co wyzej!
+  });
+};
+
+
+const whereAmI = async function(country){
+  try{
+//Geolocation
+    const pos =  await getPosition();
+    const {latitude: lat, longitude: lng} = pos.coords;
+
+//Reverse geocoding
+    const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?json=1`);
+    if(!resGeo.ok) throw new Error('Problem getting location data');
+    const dataGeo = await resGeo.json();
+    console.log(dataGeo);
+
+//Country Data
+    //What i've learned about async:
+    // fetch(`https://restcountries.com/v3.1/name/${country}`)
+    // .then(res1 => console.log(res1));
+
+//But this is doing exacly what what is above but in more elegant way
+    const res = await fetch(`https://restcountries.com/v3.1/name/${dataGeo.country}`);
+    if(!res.ok) throw new Error('Problem getting country');
+    const data = await res.json();
+    renderCountry(data[0])
+
+    return `You are in ${dataGeo.city}, ${dataGeo.country}`; // to przechodzi 2 ci: $
+  }catch(error){
+    console.error(`${error}`)
+    renderError(`${error.message}`);
+    throw error;          //to przechodzi do 2err: $
+  }
+}
+// whereAmI('poland');
+// console.log('FIRST');
+
+// try{
+//   let y  = 1;
+//   const x = 2; 
+//   // x =3;
+//   y=3;
+// }catch(error){
+//   alert(error.message);
+// }
+
+console.log('1.Will get location');;
+// const city = whereAmI();
+// console.log(city);
+// whereAmI()
+//   .then(city =>console.log(`2 ci: ${city}`))
+//   .catch(err => console.log(`2err: ${err.message}`))    //Prawdilowy sposob zwrocenia wartosci;
+//   .finally(() => console.log('3. '))          // Wyswietla sie po "2" 
+  
+
+// full async mode!!!!!!!!!
+  ( async function(){
+    try{
+      const city = await whereAmI();
+      console.log(`2 ci: ${city}`)
+    }catch(err) {
+      console.log(`2err: ${err.message}`)
+    }
+    console.log('3. ')
+
+  }) ();
+*/
+
+/////////////////////////////////////////////////////////////////////////////
+// MULTIPULE ASYNC 
+/////////////////////////////////////////////////////////////////////////////
+/*
+const get3Country = async function(c1, c2, c3){
+  try{
+    // const [data1] = await getJSON(`https://restcountries.com/v3.1/name/${c1}`);
+    // const [data2] = await getJSON(`https://restcountries.com/v3.1/name/${c2}`);
+    // const [data3] = await getJSON(`https://restcountries.com/v3.1/name/${c3}`);
+
+    
+    const data = await Promise.all([
+      getJSON(`https://restcountries.com/v3.1/name/${c1}`), 
+      getJSON(`https://restcountries.com/v3.1/name/${c2}`),
+      getJSON(`https://restcountries.com/v3.1/name/${c3}`)
+    ]);
+
+    // console.log(data1.capital, data2.capital, data3.capital);
+    console.log(data.map(d => d[0].capital));
+    
+  }catch(err) {
+    console.log(`2err: ${err.message}`)
+  }
+}
+
+Promise.all();
+
+get3Country('poland', 'germany', 'france');
+*/
+
+/////////////////////////////////////////////////////////////////////////////
+//Promise race
+Promise.race([
+  getJSON(`https://restcountries.com/v3.1/name/poland`),
+  timeout(0.1),
+])
+  .then(res => console.log(res[0]))
+  .catch(err => console.error(err));
+
+// Promise.allSettled
+Promise.allSettled([
+  Promise.resolve('Success'),
+  Promise.reject('ERROR'),
+  Promise.resolve('Another success'),
+]).then(res => console.log(res));
+
+Promise.all([
+  Promise.resolve('Success'),
+  Promise.reject('ERROR'),
+  Promise.resolve('Another success'),
+])
+  .then(res => console.log(res))
+  .catch(err => console.error(err));
+
+// Promise.any [ES2021]
+Promise.any([
+  Promise.resolve('Success'),
+  Promise.reject('ERROR'),
+  Promise.resolve('Another success'),
+])
+  .then(res => console.log(res))
+  .catch(err => console.error(err));
