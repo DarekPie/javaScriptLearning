@@ -45,7 +45,7 @@ console.log(lastPost);
 const lastPost2 = await getLastPost();
 console.log(lastPost2);
 */
-/*
+
 const ShoppingCart2 = (function(){
   const cart = [];
   const shippingCost = 10;
@@ -73,11 +73,3 @@ const ShoppingCart2 = (function(){
 ShoppingCart2.addToCart('apple', 4); 
 ShoppingCart2.addToCart('pizza', 2); 
 console.log(ShoppingCart2);
-
-*/
-
-////////////////////////////////////////////////////////////////////
-//Comon JS module
-//////////////////////////////////////////////////////////////////////////////////////
-
-//Export
