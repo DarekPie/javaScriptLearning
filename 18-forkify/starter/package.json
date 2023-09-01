@@ -1,0 +1,19 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Recipe application",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "type": "module",
+  "author": "Darek Piechota",
+  "license": "ISC",
+  "devDependencies": {
+    "node-sass": "^9.0.0",
+    "parcel": "^2.9.3"
+  },
+  "dependencies": {
+    "core-js": "^3.32.1"
+  }
+}
