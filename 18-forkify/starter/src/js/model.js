@@ -24,7 +24,7 @@ export const loadRecipe = async function(id){
     // console.log(res, data);
     console.log(data);
   
-    const {recipes } = data.data;
+    const {recipe } = data.data;
     state.recipe ={
       id: recipe.id,
       title: recipe.title,
