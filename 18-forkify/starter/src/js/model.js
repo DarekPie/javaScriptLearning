@@ -1,9 +1,14 @@
 import { async } from 'regenerator-runtime';
 import { API_URL } from './config';
 import { getJSON } from './helpers';
+// import { set } from 'core-js/core/dict';   jakis bug wyskakiwal
 
 export const state = {
   recipe: {},
+  search: {
+    query: '',
+    results: [],
+  },
 };
 
 export const loadRecipe = async function(id){
@@ -19,7 +24,7 @@ export const loadRecipe = async function(id){
     // console.log(res, data);
     console.log(data);
   
-    const {recipe } = data.data;
+    const {recipes } = data.data;
     state.recipe ={
       id: recipe.id,
       title: recipe.title,
@@ -33,6 +38,28 @@ export const loadRecipe = async function(id){
     console.log( state.recipe);
   }catch(err){
     console.error(`${err} !!!!!!!!!!!!!???????????`);
+    throw err;
   }
 
 }
+
+export const loadSearchResults = async function(query) {
+  try {
+    state.search.query = query;
+    const data = await getJSON(`${API_URL}?search=${query}`)
+    console.log(data);
+
+   state.search.results = data.data.recipes.map(rec => {
+      return {
+        id: rec.id,
+        title: rec.title,
+        publisher: rec.publisher,
+        image: rec.image_url,
+      };
+    });
+    console.log();
+  }catch(err){
+    console.error(`${err}?????????????????????????????????????!!!!!!!!`);
+  }
+};
+
