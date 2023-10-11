@@ -1,6 +1,7 @@
 import { async } from 'regenerator-runtime';
-import { API_URL } from './config';
+import { API_URL, KEY } from './config';
 import { getJSON } from './helpers';
+
 // import { set } from 'core-js/core/dict';   jakis bug wyskakiwal
 
 export const state = {
@@ -46,10 +47,12 @@ export const loadRecipe = async function(id){
 export const loadSearchResults = async function(query) {
   try {
     state.search.query = query;
-    const data = await getJSON(`${API_URL}?search=${query}`)
+    const data = await getJSON(`${API_URL}?search=${query}&key=${KEY}`)
+    console.log(`${API_URL}?search=${query}&key=${KEY}`);
     console.log(data);
 
    state.search.results = data.data.recipes.map(rec => {
+      console.log("starts state.search.results !!!!!!!!!");
       return {
         id: rec.id,
         title: rec.title,
@@ -57,7 +60,8 @@ export const loadSearchResults = async function(query) {
         image: rec.image_url,
       };
     });
-    console.log();
+    console.log( state.search.results);
+    
   }catch(err){
     console.error(`${err}?????????????????????????????????????!!!!!!!!`);
   }

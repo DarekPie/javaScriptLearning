@@ -57,6 +57,7 @@ const controlRecipes = async function(){
 
       // Render results
       console.log(state.search.results);
+      resultsView.render(state.search.results);
     }catch(err){
       console.log(err);
     }
