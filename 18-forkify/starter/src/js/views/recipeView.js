@@ -7,7 +7,7 @@ console.log(Fraction);
 
 class RecipeVeiw extends View{
   _parentElement = document.querySelector('.recipe');
-  _errorMessage = 'We can not fint that Recipe. Please try another one!';
+  _errorMessage = 'No recipes found for your query! Please try again :)';
   _message = '';
   
   
@@ -55,9 +55,6 @@ class RecipeVeiw extends View{
       </div>
 
       <div class="recipe__user-generated">
-        <svg>
-          <use href="${icons}#icon-user"></use>
-        </svg>
       </div>
       <button class="btn--round">
         <svg class="">

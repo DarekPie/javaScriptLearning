@@ -587,6 +587,7 @@ var _resultsViewJsDefault = parcelHelpers.interopDefault(_resultsViewJs);
 // import searchView from './views/searchView.js';
 // const recipeContainer = document.querySelector('.recipe');
 // https://forkify-api.herokuapp.com/v2
+if (module.hot) module.hot.accept();
 ///////////////////////////////////////
 const controlRecipes = async function() {
     try {
@@ -618,7 +619,7 @@ const controlSarchResults = async function() {
         // 2 Load search  results
         await _modelJs.loadSearchResults(query);
         // Render results
-        console.log(_modelJs.state.search.results);
+        // console.log(model.state.search.results);
         (0, _resultsViewJsDefault.default).render(_modelJs.state.search.results); // PAMIETAJ O MODELU!!!! PRZEZ TO NIE DZIALALO!
     } catch (err) {
         console.log(err);
@@ -2606,7 +2607,7 @@ var _fractional = require("fractional");
 console.log((0, _fractional.Fraction));
 class RecipeVeiw extends (0, _viewJsDefault.default) {
     _parentElement = document.querySelector(".recipe");
-    _errorMessage = "We can not fint that Recipe. Please try another one!";
+    _errorMessage = "No recipes found for your query! Please try again :)";
     _message = "";
     addHandlerRender(handler) {
         [
@@ -2654,9 +2655,6 @@ class RecipeVeiw extends (0, _viewJsDefault.default) {
       </div>
 
       <div class="recipe__user-generated">
-        <svg>
-          <use href="${0, _iconsSvgDefault.default}#icon-user"></use>
-        </svg>
       </div>
       <button class="btn--round">
         <svg class="">
@@ -2752,6 +2750,7 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     _data;
     render(data) {
+        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
         this._data = data;
         const markup = this._generateMarkup();
         // recipeContainer.innerHTML = '';
@@ -3094,18 +3093,13 @@ class ResultsView extends (0, _viewJsDefault.default) {
     _generateMarkupPreview(result) {
         return `
     <li class="preview">
-      <a class="preview__link preview__link--active" href="#${result.id}">
+      <a class="preview__link" href="#${result.id}">
         <figure class="preview__fig">
-          <img src="${result.image}" alt="Test" />
+          <img src="${result.image}" alt="${result.title}" />
         </figure>
         <div class="preview__data">
           <h4 class="preview__title">${result.title}</h4>
           <p class="preview__publisher">${result.publisher}</p>
-          <div class="preview__user-generated">
-            <svg>
-              <use href="${0, _iconsSvgDefault.default}#icon-user"></use>
-            </svg>
-          </div>
         </div>
       </a>
     </li>

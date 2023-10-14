@@ -13,6 +13,10 @@ import resultsView from './views/resultsView.js';
 
 // https://forkify-api.herokuapp.com/v2
 
+
+if(module.hot){
+  module.hot.accept();
+}
 ///////////////////////////////////////
 const controlRecipes = async function(){
   try{
@@ -55,7 +59,7 @@ const controlRecipes = async function(){
       await model.loadSearchResults(query);
 
       // Render results
-      console.log(model.state.search.results);
+      // console.log(model.state.search.results);
       resultsView.render(model.state.search.results);     // PAMIETAJ O MODELU!!!! PRZEZ TO NIE DZIALALO!
     }catch(err){
       console.log(err);
