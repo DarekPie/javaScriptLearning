@@ -581,9 +581,9 @@ var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
 var _searchViewJs = require("./views/searchView.js");
 var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
+var _regeneratorRuntime = require("regenerator-runtime");
 var _resultsViewJs = require("./views/resultsView.js");
 var _resultsViewJsDefault = parcelHelpers.interopDefault(_resultsViewJs);
-var _regeneratorRuntime = require("regenerator-runtime");
 // import searchView from './views/searchView.js';
 // const recipeContainer = document.querySelector('.recipe');
 // https://forkify-api.herokuapp.com/v2
@@ -618,8 +618,8 @@ const controlSarchResults = async function() {
         // 2 Load search  results
         await _modelJs.loadSearchResults(query);
         // Render results
-        console.log(state.search.results);
-        (0, _resultsViewJsDefault.default).render(state.search.results);
+        console.log(_modelJs.state.search.results);
+        (0, _resultsViewJsDefault.default).render(_modelJs.state.search.results); // PAMIETAJ O MODELU!!!! PRZEZ TO NIE DZIALALO!
     } catch (err) {
         console.log(err);
     }
@@ -3114,6 +3114,6 @@ class ResultsView extends (0, _viewJsDefault.default) {
 }
 exports.default = new ResultsView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/icons.svg":"loVOp","./View.js":"5cUXS"}]},["aD7Zm","aenu9"], "aenu9", "parcelRequire3a11")
+},{"./View.js":"5cUXS","url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aD7Zm","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map
