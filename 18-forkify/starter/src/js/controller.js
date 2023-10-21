@@ -1,6 +1,7 @@
 import * as model from './model.js';
 import recipeView from './views/recipeView.js'; 
 import searchView from './views/searchView.js'; 
+import paginationView from './views/paginationView.js'; 
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime.js'
@@ -58,9 +59,16 @@ const controlRecipes = async function(){
       // 2 Load search  results
       await model.loadSearchResults(query);
 
-      // Render results
+      // 3 Render results
       // console.log(model.state.search.results);
-      resultsView.render(model.state.search.results);     // PAMIETAJ O MODELU!!!! PRZEZ TO NIE DZIALALO!
+      //resultsView.render(model.state.search.results);     // PAMIETAJ O MODELU!!!! PRZEZ TO NIE DZIALALO!
+      resultsView.render(model.getSearchResultsPage(3))
+
+
+      // 4. Render initial pagination buttons
+      paginationView.render(model.state.search);
+      console.log(paginationView);
+
     }catch(err){
       console.log(err);
     }
