@@ -62,7 +62,7 @@ const controlRecipes = async function(){
       // 3 Render results
       // console.log(model.state.search.results);
       //resultsView.render(model.state.search.results);     // PAMIETAJ O MODELU!!!! PRZEZ TO NIE DZIALALO!
-      resultsView.render(model.getSearchResultsPage(3))
+      resultsView.render(model.getSearchResultsPage(3));
 
 
       // 4. Render initial pagination buttons
@@ -75,10 +75,22 @@ const controlRecipes = async function(){
   }
   
   // controlSarchResults();
+  const controlPagination = function(goToPage) {
+    // 1 Render NEW results
+      // console.log(model.state.search.results);
+      //resultsView.render(model.state.search.results);     // PAMIETAJ O MODELU!!!! PRZEZ TO NIE DZIALALO!
+      resultsView.render(model.getSearchResultsPage(goToPage));
+
+
+      // 2. Render NEW initial pagination buttons
+      paginationView.render(model.state.search);
+      console.log(paginationView);
+  }
   
   const init = function(){
     recipeView.addHandlerRender(controlRecipes);
-    searchView.addHandlerSearch(controlSarchResults)
+    searchView.addHandlerSearch(controlSarchResults);
+    paginationView.addHandlerClick(controlPagination)
   }
   init();
 

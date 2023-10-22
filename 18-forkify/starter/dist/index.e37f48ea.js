@@ -632,9 +632,19 @@ const controlSarchResults = async function() {
     }
 };
 // controlSarchResults();
+const controlPagination = function(goToPage) {
+    // 1 Render NEW results
+    // console.log(model.state.search.results);
+    //resultsView.render(model.state.search.results);     // PAMIETAJ O MODELU!!!! PRZEZ TO NIE DZIALALO!
+    (0, _resultsViewJsDefault.default).render(_modelJs.getSearchResultsPage(goToPage));
+    // 2. Render NEW initial pagination buttons
+    (0, _paginationViewJsDefault.default).render(_modelJs.state.search);
+    console.log((0, _paginationViewJsDefault.default));
+};
 const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
     (0, _searchViewJsDefault.default).addHandlerSearch(controlSarchResults);
+    (0, _paginationViewJsDefault.default).addHandlerClick(controlPagination);
 };
 init();
 
@@ -1950,7 +1960,8 @@ const loadSearchResults = async function(query) {
     }
 };
 const getSearchResultsPage = function(page = state.search.page) {
-    // state.search.page = page;
+    state.search.page = page;
+    console.log("++page " + page);
     const start = (page - 1) * state.search.resultsPerPage; //0; 
     const end = page * state.search.resultsPerPage; //9;
     return state.search.results.slice(start, end);
@@ -3136,17 +3147,27 @@ var _iconsSvg = require("url:../../img/icons.svg"); //Parcel 2 is ok ok'
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class PaginationView extends (0, _viewJsDefault.default) {
     _parentElement = document.querySelector(".pagination");
+    addHandlerClick(handler) {
+        this._parentElement.addEventListener("click", function(e) {
+            const btn = e.target.closest(".btn--inline");
+            console.log(btn);
+            if (!btn) return;
+            const goToPage = +btn.dataset.goto;
+            // console.log(goToPage);
+            handler(goToPage);
+        });
+    }
     _generateMarkup() {
         const curPage = this._data.page;
         const numPages = (0, _coreJs.Math).ceil(this._data.results.length / this._data.resultsPerPage);
-        console.log(numPages);
-        console.log("curPage " + curPage);
-        console.log("numPages " + numPages);
+        // console.log(numPages);
+        // console.log("curPage " + curPage);
+        // console.log("numPages " + numPages);
         //Page 1, ang thare are other pages
         if (curPage === 1 && numPages > 1) {
             console.log("pag 1 , others");
             return `
-        <button class="btn--inline pagination__btn--next">
+        <button data-goto="${curPage + 1}" class="btn--inline pagination__btn--next">
           <span>Page ${curPage + 1}</span>
           <svg class="search__icon">
             <use href="${0, _iconsSvgDefault.default}#icon-arrow-right"></use>
@@ -3157,7 +3178,7 @@ class PaginationView extends (0, _viewJsDefault.default) {
         //Page 1 there are no other pages
         // last page
         if (curPage === numPages && numPages > 1) return `
-        <button class="btn--inline pagination__btn--prev">
+        <button data-goto="${curPage - 1}" class="btn--inline pagination__btn--prev">
           <svg class="search__icon">
             <use href="${0, _iconsSvgDefault.default}#icon-arrow-left"></use>
           </svg>
@@ -3166,13 +3187,13 @@ class PaginationView extends (0, _viewJsDefault.default) {
           `;
         //Other page
         if (curPage < numPages) return `
-      <button class="btn--inline pagination__btn--prev">
+      <button data-goto="${curPage - 1}" class="btn--inline pagination__btn--prev">
         <svg class="search__icon">
           <use href="${0, _iconsSvgDefault.default}#icon-arrow-left"></use>
         </svg>
           <span>Page ${curPage - 1}</span>
       </button>
-      <button class="btn--inline pagination__btn--next">
+      <button data-goto="${curPage + 1}" class="btn--inline pagination__btn--next">
         <span>Page ${curPage + 1}</span>
         <svg class="search__icon">
           <use href="${0, _iconsSvgDefault.default}#icon-arrow-right"></use>
