@@ -598,6 +598,8 @@ const controlRecipes = async function() {
         if (!id) return;
         // renderSpinner(recipeContainer);
         (0, _recipeViewJsDefault.default).renderSpinner();
+        //0) Update results view to mark selected search result
+        (0, _resultsViewJsDefault.default).update(_modelJs.getSearchResultsPage()); //selected is selected :)
         // 1. Loading recipe
         await _modelJs.loadRecipe(id);
         //2. Rendering recipe
@@ -2771,7 +2773,7 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     _data;
     render(data) {
-        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
+        // if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError(); // nie ma sensu bo warunke zawsze prawdziwy
         this._data = data;
         const markup = this._generateMarkup();
         // recipeContainer.innerHTML = '';
@@ -3171,9 +3173,10 @@ class ResultsView extends (0, _viewJsDefault.default) {
         return this._data.map(this._generateMarkupPreview).join("");
     }
     _generateMarkupPreview(result) {
+        const id = window.location.hash.slice(1);
         return `
     <li class="preview">
-      <a class="preview__link" href="#${result.id}">
+      <a class="preview__link ${result.id === id ? "preview__link--active" : ""}" href="#${result.id}">
         <figure class="preview__fig">
           <img src="${result.image}" alt="${result.title}" />
         </figure>

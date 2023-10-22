@@ -5,7 +5,8 @@ export default class View {
 
   render(data){
 
-    if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
+    // if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError(); // nie ma sensu bo warunke zawsze prawdziwy
+    
 
     this._data = data;
     const markup = this._generateMarkup();
@@ -39,7 +40,7 @@ export default class View {
         console.log();
         Array.from(newEl.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
       }
-      
+
     });
   }
 
