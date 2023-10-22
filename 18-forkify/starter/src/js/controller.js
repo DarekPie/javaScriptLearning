@@ -97,7 +97,8 @@ const controlServings = function(newServgins){
 
   //Update the recipe view
   // Rendering recipe
-  recipeView.render(model.state.recipe);
+  // recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
 
 }
 

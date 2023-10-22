@@ -647,7 +647,8 @@ const controlServings = function(newServgins) {
     _modelJs.updateServings(newServgins);
     //Update the recipe view
     // Rendering recipe
-    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+    // recipeView.render(model.state.recipe);
+    (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
 };
 const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
@@ -2776,6 +2777,27 @@ class View {
         // recipeContainer.innerHTML = '';
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    update(data) {
+        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
+        this._data = data;
+        const newMarkup = this._generateMarkup();
+        const newDOM = document.createRange().createContextualFragment(newMarkup); //virtual DOM object
+        const newElements = newDOM.querySelectorAll("*");
+        const curElements = this._parentElement.querySelectorAll("*");
+        newElements.forEach((newEl, i)=>{
+            const curEl = curElements[i];
+            // console.log(curEl, newEl.isEqualNode(curEl), newEl);
+            //Updates changed TEXT
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild.nodeValue.trim() !== "") // console.log('***', newEl.firstChild.nodeValue.trim());
+            curEl.textContent = newEl.textContent;
+            //Updates changed ATRIBUTES
+            if (!newEl.isEqualNode(curEl)) {
+                // console.log(newEl.attributes);
+                console.log();
+                Array.from(newEl.attributes).forEach((attr)=>curEl.setAttribute(attr.name, attr.value));
+            }
+        });
     }
     _clear() {
         this._parentElement.innerHTML = "";
