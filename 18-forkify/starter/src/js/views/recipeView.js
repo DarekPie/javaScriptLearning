@@ -3,7 +3,7 @@ import View from './View.js';
 // import icons from '../img/icons.svg'    //Parcel 1 is ok ok
 import icons from 'url:../../img/icons.svg';    //Parcel 2 is ok ok
 import {Fraction} from 'fractional';
-console.log(Fraction);
+// console.log(Fraction);
 
 class RecipeVeiw extends View{
   _parentElement = document.querySelector('.recipe');
@@ -19,9 +19,9 @@ class RecipeVeiw extends View{
     this._parentElement.addEventListener('click', function(e) {
       const btn  = e.target.closest('.btn--update-servings');
       if(!btn) return;
-      console.log(btn);
+      // console.log(btn);
       const {updateTo} = btn.dataset;    // - will be converted to camelCase notation
-      console.log(+updateTo[0]);
+      // console.log(+updateTo[0]);
       if((+updateTo[0]) > 0 ) handler(+updateTo[0]);
     });
   };

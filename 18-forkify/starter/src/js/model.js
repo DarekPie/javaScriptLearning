@@ -26,7 +26,7 @@ export const loadRecipe = async function(id){
         
     // if(!res.ok) throw new Error(`${data.message} (${res.status})`);
     // console.log(res, data);
-    console.log(data);
+    // console.log(data);
   
     const {recipe } = data.data;
     state.recipe ={
@@ -44,9 +44,9 @@ export const loadRecipe = async function(id){
     else
       state.recipe.bookmarked = false;
 
-    console.log( state.recipe);
+    // console.log( state.recipe);
   }catch(err){
-    console.error(`${err} !!!!!!!!!!!!!???????????`);
+    // console.error(`${err} !!!!!!!!!!!!!???????????`);
     throw err;
   }
 
@@ -56,11 +56,11 @@ export const loadSearchResults = async function(query) {
   try {
     state.search.query = query;
     const data = await getJSON(`${API_URL}?search=${query}&key=${KEY}`)
-    console.log(`${API_URL}?search=${query}&key=${KEY}`);
-    console.log(data);
+    // console.log(`${API_URL}?search=${query}&key=${KEY}`);
+    // console.log(data);
 
    state.search.results = data.data.recipes.map(rec => {
-      console.log("starts state.search.results !!!!!!!!!");
+      // console.log("starts state.search.results !!!!!!!!!");
       return {
         id: rec.id,
         title: rec.title,
@@ -68,10 +68,10 @@ export const loadSearchResults = async function(query) {
         image: rec.image_url,
       };
     });
-    console.log( state.search.results);
+    // console.log( state.search.results);
     state.search.page = 1;
   }catch(err){
-    console.error(`${err}?????????????????????????????????????!!!!!!!!`);
+    // console.error(`${err}?????????????????????????????????????!!!!!!!!`);
     throw err;
   }
 };
@@ -79,7 +79,7 @@ export const loadSearchResults = async function(query) {
 export const getSearchResultsPage = function(page = state.search.page){
 
   state.search.page = page;
-  console.log("++page " + page);
+  // console.log("++page " + page);
 
 const start = (page - 1) * state.search.resultsPerPage; //0; 
 const end = page * state.search.resultsPerPage;         //9;
@@ -96,12 +96,17 @@ export const updateServings = function(newServings){
   state.recipe.servings = newServings;
 };
 
+const presistBookmakrs = function(){
+  localStorage.setItem('bookMarks', JSON.stringify(state.bookmarks));
+}
+
 export const addBookmark = function(recipe) {
   //Add bookmark
   state.bookmarks.push(recipe);
 
   //Mark current recipe as bookmak
   if(recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+  presistBookmakrs()
 };
 
 export const deleteBookmark = function(id){
@@ -111,4 +116,13 @@ export const deleteBookmark = function(id){
 
   //Mark current recipe as NOT bookmak
   if(id === state.recipe.id) state.recipe.bookmarked = false;
-}
+  presistBookmakrs();
+};
+
+const init = function() {
+  const storage = localStorage.getItem('bookMarks');
+  if(storage) state.bookmarks = JSON.parse(storage);
+};
+
+init();
+console.log(state.bookmarks);
