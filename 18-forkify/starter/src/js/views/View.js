@@ -3,13 +3,16 @@ import icons from 'url:../../img/icons.svg';    //Parcel 2 is ok ok
 export default class View {
   _data;
 
-  render(data){
+  render(data ,render = true){
 
     // if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError(); // nie ma sensu bo warunke zawsze prawdziwy
-    
+
 
     this._data = data;
     const markup = this._generateMarkup();
+    if(!render) {
+      return markup;
+    }
     // recipeContainer.innerHTML = '';
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
@@ -29,7 +32,7 @@ export default class View {
       // console.log(curEl, newEl.isEqualNode(curEl), newEl);
 
       //Updates changed TEXT
-      if(!newEl.isEqualNode(curEl) && newEl.firstChild.nodeValue.trim() !== ''){
+      if(!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== ''){
         // console.log('***', newEl.firstChild.nodeValue.trim());
         curEl.textContent = newEl.textContent
       }
